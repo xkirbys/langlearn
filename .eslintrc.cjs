@@ -55,7 +55,8 @@ const config = {
           "ctx.db"
         ]
       }
-    ]
+    ],
+    "typescript-eslint/no-empty-interface": "off"
   }
 }
 module.exports = config;
