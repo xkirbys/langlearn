@@ -13,13 +13,13 @@ const KanaLearn: NextPage = () => {
     const [totalCount, setTotalCount] = useState<number>(0);
     const [hadError, setHadError] = useState<boolean>(false);
 
-    const getRandomKana = (): [string, string] => {
+    const getRandomKana = (): [string, string] => { // Generate a random kana pair
         const randomIndex: number = Math.floor(Math.random() * kanaArray.length);
         return kanaArray[randomIndex]!;
     }
 
-    const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>): void => {
-        const newText = event.target.value;
+    const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>): void => { // Handle input change
+        const newText: string = event.target.value;
         setInputText(newText);
         if (randomKanaPair[1].startsWith(newText)) {
             if (newText === randomKanaPair[1]) {
@@ -28,21 +28,21 @@ const KanaLearn: NextPage = () => {
                 }
                 setHadError(false);
                 setTotalCount(totalCount + 1);
-                let newRandomKana = getRandomKana();
+                let newRandomKana: [string, string] = getRandomKana();
                 do {
                     newRandomKana = getRandomKana();
                 } while (newRandomKana[1] === randomKanaPair[1]);
                 setDisplayText(newRandomKana[0]);
                 setRandomKanaPair(newRandomKana);
-                setInputText(""); // Clear the input field
+                setInputText("");
             }
         } else {
             setHadError(true);
         }
     }
 
-    useEffect(() => {
-        const randomkana = getRandomKana();
+    useEffect((): void => { // Generate a random kana pair on component mount
+        const randomkana: [string, string] = getRandomKana();
         setDisplayText(randomkana[0]);
         setRandomKanaPair(randomkana);
     }, []);
