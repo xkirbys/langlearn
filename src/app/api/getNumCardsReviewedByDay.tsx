@@ -2,14 +2,10 @@
 
 import { useEffect, useState } from 'react';
 import { DataTable } from '@/app/test/data-table';
-import { AnkiCard, columns } from '@/app/test/columns';
+import { columns } from '@/app/test/columns';
+import type { AnkiCard } from '@/app/test/columns';
 
 
-
-interface DataType {
-    result: AnkiCard[] | null;
-    error: string | null;
-}
 
 export default function GetNumCardsReviewedByDay() {
     const [data, setData] = useState<AnkiCard[] | null>(null);
@@ -39,7 +35,7 @@ export default function GetNumCardsReviewedByDay() {
                 } else {
                     const formattedData = resultData.map(([date, amount]: [string, number]) => ({ date, amount }));
                     setData(formattedData);
-                    const total = formattedData.reduce((sum, { amount }) => sum + amount, 0);
+
 
                 }
 
