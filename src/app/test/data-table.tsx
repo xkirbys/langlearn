@@ -22,23 +22,26 @@ import { Button } from "@/components/ui/button";
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
     data: TData[]
+    rowCount?: number
 }
 
 export function DataTable<TData, TValue>({
                                              columns,
                                              data,
+                                             rowCount,
                                          }: DataTableProps<TData, TValue>) {
     const table = useReactTable({
         data,
         columns,
         getCoreRowModel: getCoreRowModel(),
         getPaginationRowModel: getPaginationRowModel(),
+        pageCount: rowCount ? Math.ceil(rowCount / 5) : undefined,
+        initialState: { pagination: { pageSize: 5 } },
     })
     // TODO: Add Sorting
 
     return (
         <div>
-            <h1 className={"text-2xl font-bold py-4"}>Anki Cards Reviewed By Day</h1>
         <div className="rounded-md border">
             <Table>
                 <TableHeader>
@@ -83,7 +86,11 @@ export function DataTable<TData, TValue>({
                 </TableBody>
             </Table>
         </div>
+
         <div className={"flex items-center justify-end space-x-2 py-4"}>
+            <div className={"text-sm"}>
+                Page {table.getState().pagination.pageIndex + 1} of {table.getPageCount()}
+            </div>
             <Button
                 variant={"outline"}
                 size={"sm"}

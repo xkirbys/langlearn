@@ -9,7 +9,7 @@ const Navbar: React.FC = () => {
     const pages = [
         { path: "kana", name: "Kana" },
         { path: "/", name: "Root" },
-        { path: "page3", name: "Page 3" },
+        { path: "test", name: "TEST" },
     ];
 
     const MAX_VISIBLE_PAGES = 3; // Maximum number of visible entries
