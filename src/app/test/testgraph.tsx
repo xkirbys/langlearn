@@ -19,10 +19,11 @@ import {
 
 // Summarize data into months and sort from oldest to newest
 let chartData: { month: string; amount: number }[] = [];
-void getData().then(data => {
+getData().then(data => {
     const monthlyData: Record<string, number> = {};
     data.forEach(entry => {
-        const month = new Date(entry.date).toLocaleString('default', { month: 'long', year: 'numeric' });
+        const date = new Date(entry.date);
+        const month = date.toLocaleString('default', { month: 'long', year: 'numeric' });
         if (!monthlyData[month]) {
             monthlyData[month] = 0;
         }
@@ -30,11 +31,18 @@ void getData().then(data => {
     });
 
     chartData = Object.keys(monthlyData)
-        .map(month => ({ month, amount: monthlyData[month] ?? 0 }))
-        .sort((a, b) => new Date(a.month).getTime() - new Date(b.month).getTime());
-}).catch((error: unknown) => {
-    console.error("Failed to fetch data:", error)
+        .map(month => {
+            const [monthName, year] = month.split(' ');
+            const monthIndex = new Date(`${monthName} 1, ${year}`).getMonth();
+            const dateObj = new Date(Number(year), monthIndex);
+            return { month, amount: monthlyData[month] ?? 0, dateObj };
+        })
+        .sort((a, b) => a.dateObj.getTime() - b.dateObj.getTime())
+        .map(item => ({ month: item.month, amount: item.amount })); // Remove dateObj after sorting
+}).catch(error => {
+    console.error("Failed to fetch data:", error);
 });
+
 
 const chartConfig: ChartConfig = {
     desktop: {
