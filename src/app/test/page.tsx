@@ -1,10 +1,7 @@
 import GetNumCardsReviewedByDay from '@/app/api/getNumCardsReviewedByDay';
-import { TestChart } from '@/app/test/testgraph';
 import {
     Card,
     CardContent,
-    CardDescription,
-    CardFooter,
     CardHeader,
     CardTitle,
 } from "@/components/ui/card"
