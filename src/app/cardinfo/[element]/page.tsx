@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { getData } from '../../api/cardInfo';
-import type { CardProps } from '../../api/cardInfo';
+import { getData } from '@/app/api/cardInfo';
+import type { CardProps } from '@/app/api/cardInfo';
 
 export default function CardInfoPage({ params }: { params: { element: number } }) {
     const { element } = params;
