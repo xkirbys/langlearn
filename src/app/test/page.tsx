@@ -1,4 +1,5 @@
 import GetNumCardsReviewedByDay from '@/app/api/getNumCardsReviewedByDay';
+import FindCards from '@/app/api/findCards';
 import {
     Card,
     CardContent,
@@ -18,6 +19,9 @@ const AnkiPage = () => {
                         <GetNumCardsReviewedByDay />
                     </CardContent>
                 </Card>
+            </div>
+            <div className={"absolute top-16 right-16 py-4"}>
+                <FindCards deckName={"Kaishi_1.5k"} />
             </div>
         </div>
     )

@@ -1,14 +1,13 @@
 'use client'
 
 import { useEffect, useState } from 'react';
-import { DataTable } from '@/app/test/data-table';
-import { columns } from '@/app/test/columns';
-import type { AnkiCard } from '@/app/test/columns';
-import { TestChart } from '@/app/test/testgraph';
 
+interface FindCardsProps {
+    deckName: string
+}
 
-export default function GetNumCardsReviewedByDay() {
-    const [data, setData] = useState<AnkiCard[] | null>(null);
+export default function FindCards({ deckName }: FindCardsProps) {
+    const [data, setData] = useState<string[] | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<Error | null>(null);
 
@@ -24,19 +23,24 @@ export default function GetNumCardsReviewedByDay() {
 
     async function fetchData() {
         try {
-            const response = await fetch("http://localhost:8765", {
+            const response: Response = await fetch("http://localhost:8765", {
                 method: "POST",
                 mode: "cors",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ action: "getNumCardsReviewedByDay" }),
+                body: JSON.stringify({
+                    action: "findCards",
+                    params: {
+                        query: `deck:${deckName} -is:suspended`,
+                    }
+                }),
             });
-            const resultData: [string, number][] = await response.json() as Array<[string, number]>;
+            const resultData: string[] = await response.json() as Array<string>;
             if (!Array.isArray(resultData) || resultData.length === 0) {
                 setData([]);
             } else {
-                const formattedData: AnkiCard[] = resultData.map(([date, amount]: [string, number]) => ({ date, amount }));
+                const formattedData: string[] = resultData.map((cardId: string) => cardId)
                 setData(formattedData);
             }
         }
@@ -58,33 +62,40 @@ export default function GetNumCardsReviewedByDay() {
 
         return (
             <div>
-                <DataTable columns={columns} data={data} />
-                <TestChart />
+                <h1>getDeckNames</h1>
+                {data.map((deckName: string, index: number) => (
+                    <p key={index}>{deckName}</p>
+                ))}
             </div>
         );
     }
-
     return renderContent();
 }
 
-export async function getData() {
-    const response = await fetch("http://localhost:8765", {
+export async function getData({deckName}: FindCardsProps) {
+    const response: Response = await fetch("http://localhost:8765", {
         method: "POST",
         mode: "cors",
         headers: {
             "Content-Type": "application/json",
         },
-        body: JSON.stringify({ action: "getNumCardsReviewedByDay" }),
+        body: JSON.stringify({
+            action: "findCards",
+            params: {
+                query: `deck:${deckName} -is:suspended`,
+            }
+        }),
     });
 
     if (!response.ok) {
-        throw new Error('Network response was not ok');
+        throw new Error("Network response was not ok");
     }
 
-    const resultData: [string, number][] = await response.json() as Array<[string, number]>;
+    const resultData: string[] = await response.json() as Array<string>;
     if (!Array.isArray(resultData) || resultData.length === 0) {
         return [];
     } else {
-        return resultData.map(([date, amount]: [string, number]) => ({ date, amount }));
+        return resultData.map((cardId: string) => cardId);
     }
 }
+
