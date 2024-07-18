@@ -23,7 +23,7 @@ export default function RootLayout({ children,}: Readonly<{ children: React.Reac
             <html lang="en" suppressHydrationWarning>
             <body
                 className={cn(
-                    "min-h-screen h-screen bg-background font-sans antialiased",
+                    "min-h-screen h-screen bg-background text-foreground font-sans antialiased",
                     fontSans.variable
                 )}
                 //style={{ overflow: "hidden" }}

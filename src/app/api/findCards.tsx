@@ -91,11 +91,11 @@ export async function getData({deckName}: FindCardsProps) {
         throw new Error("Network response was not ok");
     }
 
-    const resultData: string[] = await response.json() as Array<string>;
+    const resultData= await response.json() as number[];
     if (!Array.isArray(resultData) || resultData.length === 0) {
         return [];
     } else {
-        return resultData.map((cardId: string) => cardId);
+        return resultData.map((cardId: number) => cardId);
     }
 }
 

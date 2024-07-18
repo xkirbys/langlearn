@@ -21,7 +21,7 @@ const AnkiPage = () => {
                 </Card>
             </div>
             <div className={"absolute top-16 right-16 py-4"}>
-                <FindCards deckName={"Kaishi_1.5k"} />
+                <FindCards deckName={"日本語"} />
             </div>
         </div>
     )

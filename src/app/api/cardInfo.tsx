@@ -4,6 +4,10 @@ interface CardsIdProps {
     cardId: number;
 }
 
+interface CardsIdsProps {
+    cardIds: number[];
+}
+
 interface Field {
     value: string;
     order: number;
@@ -63,6 +67,32 @@ async function fetchCardInfo(cardId: number): Promise<CardProps[]> {
     }
 }
 
+async function fetchMultipleCardInfo(cardIds: number[]): Promise<CardProps[]> {
+    try {
+        const response = await fetch("http://localhost:8765", {
+            method: "POST",
+            mode: "cors",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                action: "cardsInfo",
+                params: {
+                    cards: cardIds.map(Number),
+                },
+            }),
+        });
+
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+
+        return await response.json() as CardProps[];
+    } catch (error) {
+        throw error; // Propagate the error to handle it in getData or caller
+    }
+}
+
 function formatCardData(rawData: CardProps[] | undefined): CardProps[] {
     if (!rawData) {
         return []; // Return an empty array or handle as per your application logic
@@ -101,5 +131,16 @@ export async function getData({ cardId }: CardsIdProps): Promise<ApiResponse> {
         return { result: [], error: (error as Error).message };
     }
 }
+
+export async function getDataMultiple({ cardIds }: CardsIdsProps): Promise<ApiResponse> {
+    try {
+        const rawData = await fetchMultipleCardInfo(cardIds);
+        const formattedData = formatCardData(rawData);
+        return { result: formattedData, error: null };
+    } catch (error) {
+        return { result: [], error: (error as Error).message };
+    }
+}
+
 
 export type { CardProps };
