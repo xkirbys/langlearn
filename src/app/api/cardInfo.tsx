@@ -1,7 +1,5 @@
 'use client';
 
-import {AnkiCardProps, RTKCardProps} from "@/app/api/settings/cardProps";
-
 interface CardsIdProps {
     cardId: number;
 }
@@ -79,7 +77,7 @@ async function fetchCardInfo(cardId: number): Promise<CardProps[]> {
 
     const rawData = await response.json() as CardProps[];
     if (!Array.isArray(rawData)) {
-        throw new Error('Invalid settings format');
+        throw new Error('Invalid data format');
     }
 
     return formatCardData(rawData);
@@ -106,7 +104,7 @@ async function fetchMultipleCardInfo(cardIds: number[]): Promise<CardProps[]> {
 
     const rawData = await response.json() as CardProps[];
     if (!Array.isArray(rawData)) {
-        throw new Error('Invalid settings format');
+        throw new Error('Invalid data format');
     }
 
     return formatCardData(rawData);

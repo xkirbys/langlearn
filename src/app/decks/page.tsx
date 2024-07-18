@@ -4,6 +4,9 @@ import { useEffect, useState } from "react";
 import { getData } from "@/app/api/getDeckNames";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import Link from "next/link";
+import { cacheSettings, type CachedData } from "@/app/api/settings/cacheSettings";
+
+const getCacheKey = `deckNames`;
 
 const DecksPage = () => {
     const [deckNames, setDeckNames] = useState<string[]>([]);
@@ -12,11 +15,22 @@ const DecksPage = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
+                const cachedData = localStorage.getItem(getCacheKey);
+                if (cachedData) {
+                    const { data, timestamp } = JSON.parse(cachedData) as CachedData<string[]>;
+                    if (!cacheSettings.CacheExpired(timestamp)) {
+                        setDeckNames(data);
+                        setLoading(false);
+                        return;
+                    }
+                }
+
                 const data = await getData();
                 setDeckNames(data);
+                localStorage.setItem(getCacheKey, JSON.stringify({ data, timestamp: Date.now() }));
+                setLoading(false);
             } catch (error) {
                 console.error("Error fetching deck names:", error);
-            } finally {
                 setLoading(false);
             }
         };

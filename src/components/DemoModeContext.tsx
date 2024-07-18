@@ -1,22 +1,25 @@
-
 'use client';
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
 
 interface DemoModeContextProps {
     isDemoMode: boolean;
     toggleDemoMode: () => void;
 }
+const defaultToggleDemoMode = () => {
+    console.warn('toggleDemoMode function is not implemented');
+};
 
 const DemoModeContext = createContext<DemoModeContextProps>({
     isDemoMode: false,
-    toggleDemoMode: () => {},
+    toggleDemoMode: defaultToggleDemoMode,
 });
 
 export function DemoModeProvider({ children }: { children: ReactNode }) {
     const [isDemoMode, setIsDemoMode] = useState<boolean>(() => {
         if (typeof window !== 'undefined') {
             const storedMode = localStorage.getItem('isDemoMode');
-            return storedMode ? JSON.parse(storedMode) : false;
+            return storedMode ? JSON.parse(storedMode) as boolean : false;
+
         }
         return false;
     });

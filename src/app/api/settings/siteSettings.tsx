@@ -1,5 +1,5 @@
 const siteSettings = {
-    requestURL: 'http://localhost:8765',
+    requestURL: "http://localhost:8765",
     demoMode: false,
 };
 

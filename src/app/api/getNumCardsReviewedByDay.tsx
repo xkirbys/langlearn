@@ -69,6 +69,7 @@ export default function GetNumCardsReviewedByDay() {
 }
 
 export async function getData() {
+
     const response = await fetch(siteSettings.requestURL, {
         method: "POST",
         mode: "cors",
@@ -77,6 +78,7 @@ export async function getData() {
         },
         body: JSON.stringify({ action: "getNumCardsReviewedByDay" }),
     });
+
 
     if (!response.ok) {
         throw new Error('Network response was not ok');
@@ -87,5 +89,6 @@ export async function getData() {
         return [];
     } else {
         return resultData.map(([date, amount]: [string, number]) => ({ date, amount }));
+
     }
 }
