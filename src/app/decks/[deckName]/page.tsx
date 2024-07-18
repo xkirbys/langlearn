@@ -22,6 +22,8 @@ interface CachedData<T> {
     timestamp: number;
 }
 
+export const runtime = "edge";
+
 const DeckPage = ({ params }: { params: { deckName: string } }) => {
     const deckName = decodeURIComponent(params.deckName);
 

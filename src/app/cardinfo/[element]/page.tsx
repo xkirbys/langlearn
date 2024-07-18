@@ -4,6 +4,8 @@ import React, { useEffect, useState } from 'react';
 import { getData } from '@/app/api/cardInfo';
 import type { CardProps } from '@/app/api/cardInfo';
 
+export const runtime = "edge";
+
 export default function CardInfoPage({ params }: { params: { element: number } }) {
     const { element } = params;
     const [cardData, setCardData] = useState<CardProps | null>(null);
