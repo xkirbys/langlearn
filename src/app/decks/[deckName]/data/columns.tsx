@@ -1,11 +1,11 @@
 'use client';
 
 import type {ColumnDef} from '@tanstack/react-table';
-import type {CardProps} from "@/app/api/cardInfo";
+import type {SimplifiedCardProps} from "@/app/api/cardInfo";
 import Link from "next/link";
 
 
-export const columns: ColumnDef<CardProps>[] = [
+export const columns: ColumnDef<SimplifiedCardProps>[] = [
     {
         accessorKey: 'cardId',
         header: 'Card ID',
@@ -17,7 +17,7 @@ export const columns: ColumnDef<CardProps>[] = [
             )
     },
     {
-        accessorKey: 'fields.Word.value',
+        accessorKey: 'word',
         header: 'Word',
         cell: ( info ) => {
             // make it so the size of the column is the same as the word and remember it so it doesnt change
@@ -26,7 +26,7 @@ export const columns: ColumnDef<CardProps>[] = [
         }
     },
     {
-        accessorKey: 'fields.Word Reading.value',
+        accessorKey: 'reading',
         header: 'Reading',
         cell: ( info ) => {
             // make it so the size of the column is the same as the word and remember it so it doesnt change
@@ -35,12 +35,16 @@ export const columns: ColumnDef<CardProps>[] = [
         }
     },
     {
-        accessorKey: 'fields.Word Meaning.value',
+        accessorKey: 'meaning',
         header: 'Meaning',
-        cell: ( info ) => {
+        cell: (info) => {
             // make it so the size of the column is the same as the word and remember it so it doesnt change
 
-            return <div style={{ whiteSpace: 'nowrap' }} className={"text-sm"}>{String(info.getValue())}</div>
-        }
-    }
+            return <div style={{whiteSpace: 'nowrap'}} className={"text-sm"}>{String(info.getValue())}</div>
+        },
+    },
+    {
+        accessorKey: 'cardType',
+        header: 'Card Type',
+    },
 ]

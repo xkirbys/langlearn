@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import {
-    ColumnDef,
     flexRender,
     getCoreRowModel,
     getPaginationRowModel,
     useReactTable,
 } from "@tanstack/react-table";
+import type { ColumnDef } from '@tanstack/react-table';
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
@@ -86,9 +86,11 @@ export function DataTable<TData, TValue>({
                                     key={row.id}
                                     data-state={row.getIsSelected() ? "selected" : undefined}
                                 >
-                                    {row.getVisibleCells().map((cell, index) => (
-                                        <TableCell key={cell.id} style={{ width: columnWidths[index] }}>
-                                            {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                                    {row.getVisibleCells().map((cell, cellIndex) => (
+                                        <TableCell key={cell.id} style={{ width: columnWidths[cellIndex] }}>
+                                            {cell.column.id === "cardType" && cell.getValue() === "rtk"
+                                                ? "NOT CURRENTLY SUPPORTED"
+                                                : flexRender(cell.column.columnDef.cell, cell.getContext())}
                                         </TableCell>
                                     ))}
                                 </TableRow>

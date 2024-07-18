@@ -1,35 +1,51 @@
-'use client';
-import { getData } from '@/app/api/findCards';
+'use client'
+
 import { useEffect, useState } from 'react';
-import type { CardProps } from '@/app/api/cardInfo';
+import { getData } from '@/app/api/findCards';
 import { getDataMultiple } from '@/app/api/cardInfo';
 import { columns } from '@/app/decks/[deckName]/data/columns';
 import { DataTable } from '@/app/decks/[deckName]/data/data-table-decks';
+import type { SimplifiedCardProps } from '@/app/api/cardInfo';
 import {
     Card,
     CardContent,
     CardHeader,
     CardTitle,
-} from "@/components/ui/card"
+} from "@/components/ui/card";
+import cacheSettings from "@/app/api/data/cacheSettings";
 
-//TODO: Instead of doing one request per card, make a single request for all cards in the deck
-//
+const getCacheKey = (deckName: string) => `deckData_${deckName}`;
+const getCardDetailsCacheKey = (deckName: string) => `deckDataCardDetails_${deckName}`;
+
+interface CachedData<T> {
+    data: T;
+    timestamp: number;
+}
 
 const DeckPage = ({ params }: { params: { deckName: string } }) => {
-    //const { deckName } = params;
     const deckName = decodeURIComponent(params.deckName);
 
-
     const [cards, setCards] = useState<number[]>([]);
-    const [cardDetails, setCardDetails] = useState<CardProps[]>([]);
+    const [cardDetails, setCardDetails] = useState<SimplifiedCardProps[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
+                const cachedData = localStorage.getItem(getCacheKey(deckName));
+                if (cachedData) {
+                    const { data, timestamp } = JSON.parse(cachedData) as CachedData<number[]>;
+                    if (!cacheSettings.CacheExpired(timestamp)) {
+                        setCards(data);
+                        setLoading(false);
+                        return;
+                    }
+                }
+
                 const data = await getData({ deckName });
                 setCards(data);
-                setLoading(true);
+                localStorage.setItem(getCacheKey(deckName), JSON.stringify({ data, timestamp: Date.now() }));
+                setLoading(false);
             } catch (error) {
                 console.error("Error fetching deck names:", error);
                 setLoading(false);
@@ -42,8 +58,27 @@ const DeckPage = ({ params }: { params: { deckName: string } }) => {
     useEffect(() => {
         const fetchMultipleData = async () => {
             try {
+                const cachedData = localStorage.getItem(getCardDetailsCacheKey(deckName));
+                if (cachedData) {
+                    const { data, timestamp } = JSON.parse(cachedData) as CachedData<SimplifiedCardProps[]>;
+                    if (!cacheSettings.CacheExpired(timestamp)) {
+                        setCardDetails(data);
+                        setLoading(false);
+                        return;
+                    }
+                }
+
                 const data = await getDataMultiple({ cardIds: cards });
-                setCardDetails(data.result);
+                const simplifiedData: SimplifiedCardProps[] = data.result.map((card) => ({
+                    cardId: card.cardId,
+                    deckName: card.deckName,
+                    word: card.fields.Word?.value,
+                    reading: card.fields['Word Reading']?.value,
+                    meaning: card.fields['Word Meaning']?.value,
+                    cardType: card.cardType,
+                }));
+                setCardDetails(simplifiedData);
+                localStorage.setItem(getCardDetailsCacheKey(deckName), JSON.stringify({ data: simplifiedData, timestamp: Date.now() }));
                 setLoading(false);
             } catch (error) {
                 console.error("Error fetching card details:", error);
@@ -53,7 +88,7 @@ const DeckPage = ({ params }: { params: { deckName: string } }) => {
 
         if (cards.length > 0) void fetchMultipleData();
 
-    }, [cards]);
+    }, [cards, deckName]);
 
     if (loading) {
         return <div>Trying to fetch {cards.length} cards..</div>;
@@ -74,4 +109,5 @@ const DeckPage = ({ params }: { params: { deckName: string } }) => {
         </div>
     )
 }
+
 export default DeckPage;

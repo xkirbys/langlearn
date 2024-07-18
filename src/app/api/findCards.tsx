@@ -1,9 +1,9 @@
-'use client'
+'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 
 interface FindCardsProps {
-    deckName: string
+    deckName: string;
 }
 
 export default function FindCards({ deckName }: FindCardsProps) {
@@ -11,17 +11,7 @@ export default function FindCards({ deckName }: FindCardsProps) {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<Error | null>(null);
 
-    useEffect(() => {
-        fetchData().catch((e) => {
-            if (e instanceof Error) {
-                setError(e);
-            } else {
-                setError(new Error('Unknown error'));
-            }
-        });
-    }, []);
-
-    async function fetchData() {
+    const fetchData = useCallback(async () => {
         try {
             const response: Response = await fetch("http://localhost:8765", {
                 method: "POST",
@@ -40,11 +30,10 @@ export default function FindCards({ deckName }: FindCardsProps) {
             if (!Array.isArray(resultData) || resultData.length === 0) {
                 setData([]);
             } else {
-                const formattedData: string[] = resultData.map((cardId: string) => cardId)
+                const formattedData: string[] = resultData.map((cardId: string) => cardId);
                 setData(formattedData);
             }
-        }
-        catch (e) {
+        } catch (e) {
             if (e instanceof Error) {
                 setError(e);
             } else {
@@ -53,7 +42,17 @@ export default function FindCards({ deckName }: FindCardsProps) {
         } finally {
             setLoading(false);
         }
-    }
+    }, [deckName]);
+
+    useEffect(() => {
+        fetchData().catch((e) => {
+            if (e instanceof Error) {
+                setError(e);
+            } else {
+                setError(new Error('Unknown error'));
+            }
+        });
+    }, [fetchData]);
 
     function renderContent() {
         if (loading) return <div>Loading...</div>;
@@ -69,10 +68,11 @@ export default function FindCards({ deckName }: FindCardsProps) {
             </div>
         );
     }
+
     return renderContent();
 }
 
-export async function getData({deckName}: FindCardsProps) {
+export async function getData({ deckName }: FindCardsProps) {
     const response: Response = await fetch("http://localhost:8765", {
         method: "POST",
         mode: "cors",
@@ -91,11 +91,10 @@ export async function getData({deckName}: FindCardsProps) {
         throw new Error("Network response was not ok");
     }
 
-    const resultData= await response.json() as number[];
+    const resultData = await response.json() as number[];
     if (!Array.isArray(resultData) || resultData.length === 0) {
         return [];
     } else {
         return resultData.map((cardId: number) => cardId);
     }
 }
-
