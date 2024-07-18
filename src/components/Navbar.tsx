@@ -4,18 +4,21 @@ import React from "react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import Link from "next/link";
 import { ModeToggle } from "@/components/ModeToggle";
+import { useDemoMode } from "@/components/DemoModeContext";
+import { Button } from "@/components/ui/button";
 
 const Navbar: React.FC = () => {
     const pages = [
-        { path: "kana", name: "Kana" },
-        { path: "/", name: "Root" },
+        { path: "/", name: "HOME" },
         { path: "test", name: "TEST" },
+        { path: "kana", name: "Kana" },
         { path: "decks", name: "Decks" },
     ];
 
     const MAX_VISIBLE_PAGES = 10; // Maximum number of visible entries
     const visiblePages = pages.slice(0, MAX_VISIBLE_PAGES);
     const overflowPages = pages.slice(MAX_VISIBLE_PAGES);
+    const { isDemoMode, toggleDemoMode } = useDemoMode();
 
     return (
         <nav className="flex justify-between p-4 bg-background text-foreground">
@@ -41,7 +44,22 @@ const Navbar: React.FC = () => {
                     </DropdownMenu>
                 )}
             </div>
+            <div className={"flex items-center space-x-4"}>
+            <Button
+                className={"justify-center"}
+                variant="outline"
+                onClick={toggleDemoMode}
+                style={{
+                    borderColor: isDemoMode ? 'red' : undefined,
+                    color: isDemoMode ? 'red' : undefined,
+                    backgroundColor: isDemoMode ? 'black' : undefined,
+                }}
+            >
+                {isDemoMode ? 'DEMO MODE ACTIVE, PRESS TO SWITCH' : 'Switch to Demo Mode'}
+            </Button>
+
             <ModeToggle />
+            </div>
         </nav>
     );
 };

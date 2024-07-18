@@ -1,5 +1,7 @@
 'use client';
 
+import {AnkiCardProps, RTKCardProps} from "@/app/api/settings/cardProps";
+
 interface CardsIdProps {
     cardId: number;
 }
@@ -54,9 +56,10 @@ interface ApiResponse {
 
 
 import { formatCardData } from "@/app/api/formatCardData";
+import { siteSettings } from '@/app/api/settings/siteSettings';
 
 async function fetchCardInfo(cardId: number): Promise<CardProps[]> {
-    const response = await fetch("http://localhost:8765", {
+    const response = await fetch(siteSettings.requestURL, {
         method: "POST",
         mode: "cors",
         headers: {
@@ -76,14 +79,14 @@ async function fetchCardInfo(cardId: number): Promise<CardProps[]> {
 
     const rawData = await response.json() as CardProps[];
     if (!Array.isArray(rawData)) {
-        throw new Error('Invalid data format');
+        throw new Error('Invalid settings format');
     }
 
     return formatCardData(rawData);
 }
 
 async function fetchMultipleCardInfo(cardIds: number[]): Promise<CardProps[]> {
-    const response = await fetch("http://localhost:8765", {
+    const response = await fetch(siteSettings.requestURL, {
         method: "POST",
         mode: "cors",
         headers: {
@@ -103,7 +106,7 @@ async function fetchMultipleCardInfo(cardIds: number[]): Promise<CardProps[]> {
 
     const rawData = await response.json() as CardProps[];
     if (!Array.isArray(rawData)) {
-        throw new Error('Invalid data format');
+        throw new Error('Invalid settings format');
     }
 
     return formatCardData(rawData);

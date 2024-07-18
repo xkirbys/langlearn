@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState, useCallback } from 'react';
+import { siteSettings } from '@/app/api/settings/siteSettings';
 
 interface FindCardsProps {
     deckName: string;
@@ -13,7 +14,7 @@ export default function FindCards({ deckName }: FindCardsProps) {
 
     const fetchData = useCallback(async () => {
         try {
-            const response: Response = await fetch("http://localhost:8765", {
+            const response: Response = await fetch(siteSettings.requestURL, {
                 method: "POST",
                 mode: "cors",
                 headers: {
@@ -73,7 +74,7 @@ export default function FindCards({ deckName }: FindCardsProps) {
 }
 
 export async function getData({ deckName }: FindCardsProps) {
-    const response: Response = await fetch("http://localhost:8765", {
+    const response: Response = await fetch(siteSettings.requestURL, {
         method: "POST",
         mode: "cors",
         headers: {

@@ -5,6 +5,7 @@ import { DataTable } from '@/app/test/data-table';
 import { columns } from '@/app/test/columns';
 import type { AnkiCard } from '@/app/test/columns';
 import { TestChart } from '@/app/test/testgraph';
+import { siteSettings } from '@/app/api/settings/siteSettings';
 
 
 export default function GetNumCardsReviewedByDay() {
@@ -24,7 +25,7 @@ export default function GetNumCardsReviewedByDay() {
 
     async function fetchData() {
         try {
-            const response = await fetch("http://localhost:8765", {
+            const response = await fetch(siteSettings.requestURL, {
                 method: "POST",
                 mode: "cors",
                 headers: {
@@ -68,7 +69,7 @@ export default function GetNumCardsReviewedByDay() {
 }
 
 export async function getData() {
-    const response = await fetch("http://localhost:8765", {
+    const response = await fetch(siteSettings.requestURL, {
         method: "POST",
         mode: "cors",
         headers: {

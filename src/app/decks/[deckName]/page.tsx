@@ -12,7 +12,7 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
-import cacheSettings from "@/app/api/data/cacheSettings";
+import cacheSettings from "@/app/api/settings/cacheSettings";
 
 const getCacheKey = (deckName: string) => `deckData_${deckName}`;
 const getCardDetailsCacheKey = (deckName: string) => `deckDataCardDetails_${deckName}`;
@@ -24,8 +24,11 @@ interface CachedData<T> {
 
 export const runtime = "edge";
 
+
+
 const DeckPage = ({ params }: { params: { deckName: string } }) => {
     const deckName = decodeURIComponent(params.deckName);
+    const cleanDeckName = deckName.replace(/[_/\\-]/g, ' ');
 
     const [cards, setCards] = useState<number[]>([]);
     const [cardDetails, setCardDetails] = useState<SimplifiedCardProps[]>([]);
@@ -101,7 +104,7 @@ const DeckPage = ({ params }: { params: { deckName: string } }) => {
             <div className={"absolute top-16 left-16 py-4"}>
                 <Card>
                     <CardHeader>
-                        <CardTitle>Deck: {deckName}</CardTitle>
+                        <CardTitle>Deck: {cleanDeckName}</CardTitle>
                     </CardHeader>
                     <CardContent>
                         <DataTable columns={columns} data={cardDetails} />

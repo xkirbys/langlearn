@@ -17,7 +17,7 @@ import {
     ChartTooltipContent,
 } from "@/components/ui/chart"
 
-// Summarize data into months and sort from oldest to newest
+// Summarize settings into months and sort from oldest to newest
 let chartData: { month: string; amount: number }[] = [];
 getData().then(data => {
     const monthlyData: Record<string, number> = {};
@@ -40,7 +40,7 @@ getData().then(data => {
         .sort((a, b) => a.dateObj.getTime() - b.dateObj.getTime())
         .map(item => ({ month: item.month, amount: item.amount })); // Remove dateObj after sorting
 }).catch(error => {
-    console.error("Failed to fetch data:", error);
+    console.error("Failed to fetch settings:", error);
 });
 
 

@@ -1,4 +1,4 @@
-import type { AnkiCardProps, RTKCardProps } from '@/app/api/data/cardProps';
+import type { AnkiCardProps, RTKCardProps } from '@/app/api/settings/cardProps';
 import type { CardProps } from '@/app/api/cardInfo';
 
 function formatCardData(rawData: CardProps[] | undefined): (AnkiCardProps | RTKCardProps)[] {

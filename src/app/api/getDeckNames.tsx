@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react';
+import { siteSettings } from '@/app/api/settings/siteSettings';
 
 
 export default function GetDeckNames() {
@@ -20,7 +21,7 @@ export default function GetDeckNames() {
 
     async function fetchData() {
         try {
-            const response = await fetch("http://localhost:8765", {
+            const response = await fetch(siteSettings.requestURL, {
                 method: "POST",
                 mode: "cors",
                 headers: {
@@ -66,7 +67,7 @@ export default function GetDeckNames() {
 }
 
 export async function getData() {
-    const response: Response = await fetch("http://localhost:8765", {
+    const response: Response = await fetch(siteSettings.requestURL, {
         method: "POST",
         mode: "cors",
         headers: {

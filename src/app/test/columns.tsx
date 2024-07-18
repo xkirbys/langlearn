@@ -2,7 +2,7 @@
 
 import { type ColumnDef } from "@tanstack/react-table"
 
-// This type is used to define the shape of our data.
+// This type is used to define the shape of our settings.
 // You can use a Zod schema here if you want.
 export type AnkiCard = {
     date: string

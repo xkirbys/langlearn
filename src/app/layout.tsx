@@ -5,6 +5,7 @@ import { type Metadata } from "next";
 import { ThemeProvider } from "@/components/theme-provider";
 import Navbar from "@/components/Navbar";
 import React from "react";
+import { DemoModeProvider } from "@/components/DemoModeContext";
 
 const fontSans = FontSans({
     subsets: ["latin"],
@@ -19,6 +20,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children,}: Readonly<{ children: React.ReactNode }>) {
     return (
+        <DemoModeProvider>
         <>
             <html lang="en" suppressHydrationWarning>
             <body
@@ -40,5 +42,6 @@ export default function RootLayout({ children,}: Readonly<{ children: React.Reac
             </body>
             </html>
         </>
+        </DemoModeProvider>
     );
 }
