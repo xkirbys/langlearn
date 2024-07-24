@@ -1,7 +1,7 @@
 'use client';
 
 import type {ColumnDef} from '@tanstack/react-table';
-import type {SimplifiedCardProps} from "@/app/api/cardInfo";
+import type { SimplifiedCardProps } from '@/app/api/settings/cardProps';
 import Link from "next/link";
 
 

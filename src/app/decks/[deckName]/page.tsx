@@ -5,7 +5,7 @@ import { getData } from '@/app/api/findCards';
 import { getDataMultiple } from '@/app/api/cardInfo';
 import { columns } from '@/app/decks/[deckName]/data/columns';
 import { DataTable } from '@/app/decks/[deckName]/data/data-table-decks';
-import type { SimplifiedCardProps } from '@/app/api/cardInfo';
+import type { SimplifiedCardProps } from '@/app/api/settings/cardProps';
 import {
     Card,
     CardContent,

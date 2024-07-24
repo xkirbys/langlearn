@@ -1,5 +1,6 @@
 'use client';
 import React, { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
+import { siteSettings } from '@/app/api/settings/siteSettings';
 
 interface DemoModeContextProps {
     isDemoMode: boolean;
@@ -28,10 +29,12 @@ export function DemoModeProvider({ children }: { children: ReactNode }) {
         setIsDemoMode(prevMode => {
             const newMode = !prevMode;
             localStorage.setItem('isDemoMode', JSON.stringify(newMode));
+            siteSettings.demoMode = newMode;
             return newMode;
         });
     };
 
+    // TODO: Dynamically update the title when changing sites
     useEffect(() => {
         if (typeof window !== 'undefined') {
             const baseTitle = document.title.replace(' (DEMO MODE)', '');
@@ -47,6 +50,8 @@ export function DemoModeProvider({ children }: { children: ReactNode }) {
     );
 }
 
+
+// TODO: change it, so that we dont need to use useDemoMode() in every component
 export function useDemoMode() {
     return useContext(DemoModeContext);
 }

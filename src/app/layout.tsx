@@ -5,7 +5,7 @@ import { type Metadata } from "next";
 import { ThemeProvider } from "@/components/theme-provider";
 import Navbar from "@/components/Navbar";
 import React from "react";
-import { DemoModeProvider } from "@/components/DemoModeContext";
+import {DemoModeProvider, useDemoMode} from "@/components/DemoModeContext";
 
 const fontSans = FontSans({
     subsets: ["latin"],
@@ -17,6 +17,8 @@ export const metadata: Metadata = {
     description: "app for learning",
     icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
+
+
 
 export default function RootLayout({ children,}: Readonly<{ children: React.ReactNode }>) {
     return (

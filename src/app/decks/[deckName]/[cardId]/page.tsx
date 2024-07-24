@@ -2,7 +2,9 @@
 
 import React, { useEffect, useState } from 'react';
 import { getData } from '@/app/api/cardInfo';
-import type { CardProps } from '@/app/api/cardInfo';
+import type { CardProps } from '@/app/api/settings/cardProps';
+import { useDemoMode } from '@/components/DemoModeContext';
+import { siteSettings } from '@/app/api/settings/siteSettings';
 
 export const runtime = "edge";
 
@@ -10,6 +12,7 @@ export default function CardInfoPage({ params }: { params: { cardId: number } })
     const { cardId } = params;
     const [cardData, setCardData] = useState<CardProps | null>(null);
     const [error, setError] = useState<string | null>(null);
+    useDemoMode();
 
     useEffect(() => {
         getData({ cardId: cardId })
@@ -41,6 +44,7 @@ export default function CardInfoPage({ params }: { params: { cardId: number } })
 
     return (
         <div className="p-4">
+            <h1 className="text-2xl font-bold mb-4">Currently in {siteSettings.demoMode ? 'DEMO' : 'LIVE'} Mode</h1>
             <h1 className="text-2xl font-bold mb-4">Info Page for {cardId}</h1>
             <p className="mb-4">This is detailed information about {cardId}.</p>
 

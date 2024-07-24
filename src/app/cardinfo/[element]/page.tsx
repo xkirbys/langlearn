@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { getData } from '@/app/api/cardInfo';
-import type { CardProps } from '@/app/api/cardInfo';
+import type { CardProps } from '@/app/api/settings/cardProps';
 
 export const runtime = "edge";
 

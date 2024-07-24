@@ -1,60 +1,8 @@
 'use client';
 
-interface CardsIdProps {
-    cardId: number;
-}
-
-interface CardsIdsProps {
-    cardIds: number[];
-}
-
-interface Field {
-    value: string;
-    order: number;
-}
-
-interface CardProps {
-    cardId: number;
-    fields: Record<string, Field>;
-    fieldOrder: number;
-    question: string;
-    answer: string;
-    modelName: string;
-    ord: number;
-    deckName: string;
-    css: string;
-    factor: number;
-    interval: number;
-    note: number;
-    type: number;
-    cardType: string;
-    queue: number;
-    due: number;
-    reps: number;
-    lapses: number;
-    left: number;
-    mod: number;
-    nextReviews: string[];
-}
-
-export interface SimplifiedCardProps {
-    cardId: number;
-    deckName: string;
-    word: string | undefined;
-    reading: string | undefined;
-    meaning: string | undefined;
-    cardType: string;
-}
-
-
-interface ApiResponse {
-    result: CardProps[];
-    error: string | null;
-}
-
-
 import { formatCardData } from "@/app/api/formatCardData";
 import { siteSettings } from '@/app/api/settings/siteSettings';
+import type { CardProps, ApiResponse, CardsIdProps, CardsIdsProps } from '@/app/api/settings/cardProps';
 
 async function fetchCardInfo(cardId: number): Promise<CardProps[]> {
     const response = await fetch(siteSettings.requestURL, {

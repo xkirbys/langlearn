@@ -1,9 +1,67 @@
+interface AnkiCardProps {
+    cardId: number;
+    fields: Record<string, Field>;
+    fieldOrder: number;
+    question: string;
+    answer: string;
+    modelName: string;
+    ord: number;
+    deckName: string;
+    css: string;
+    factor: number;
+    interval: number;
+    note: number;
+    type: number;
+    cardType: string;
+    queue: number;
+    due: number;
+    reps: number;
+    lapses: number;
+    left: number;
+    mod: number;
+    nextReviews: string[];
+}
+
+
+interface RTKCardProps {
+    cardId: number;
+    fields: Record<string, Field>;
+    fieldOrder: number;
+    question: string;
+    answer: string;
+    modelName: string;
+    ord: number;
+    deckName: string;
+    css: string;
+    factor: number;
+    interval: number;
+    note: number;
+    type: number;
+    cardType: string;
+    queue: number;
+    due: number;
+    reps: number;
+    lapses: number;
+    left: number;
+    mod: number;
+    nextReviews: string[];
+}
+
+
+interface CardsIdProps {
+    cardId: number;
+}
+
+interface CardsIdsProps {
+    cardIds: number[];
+}
+
 interface Field {
     value: string;
     order: number;
 }
 
-export interface AnkiCardProps {
+interface CardProps {
     cardId: number;
     fields: Record<string, Field>;
     fieldOrder: number;
@@ -27,29 +85,30 @@ export interface AnkiCardProps {
     nextReviews: string[];
 }
 
-
-export interface RTKCardProps {
+interface SimplifiedCardProps {
     cardId: number;
-    fields: Record<string, Field>;
-    fieldOrder: number;
-    question: string;
-    answer: string;
-    modelName: string;
-    ord: number;
     deckName: string;
-    css: string;
-    factor: number;
-    interval: number;
-    note: number;
-    type: number;
+    word: string | undefined;
+    reading: string | undefined;
+    meaning: string | undefined;
     cardType: string;
-    queue: number;
-    due: number;
-    reps: number;
-    lapses: number;
-    left: number;
-    mod: number;
-    nextReviews: string[];
+}
+
+
+interface ApiResponse {
+    result: CardProps[];
+    error: string | null;
+}
+
+export {
+    type CardsIdProps,
+    type AnkiCardProps,
+    type RTKCardProps,
+    type CardsIdsProps,
+    type Field,
+    type CardProps,
+    type SimplifiedCardProps,
+    type ApiResponse,
 }
 
 
